@@ -58,19 +58,19 @@ Each entity (i.e. Region, Institution, or Facility) in the fuel cycle is modeled
 as an agent. 
 Institution agents
 are responsible for the deployment and decommissioning of facility agents and
-The institution agent represents a legal operating organization such as a 
+can represent a legal operating organization such as a 
 utility, government, etc \cite{huff_fundamental_2016}. 
 
 The Demand-Driven \Cycamore Archetype project (NEUP-FY16-10512) aims to 
 develop \Cyclus's demand-driven deployment capabilities. 
 This capability is developed in the form of a \Cyclus Institution agent that 
-deploys facilities to meet the front and back-end demands of the fuel cycle 
+deploys facilities to meet the front and back-end fuel cycle demands
 based on a user-defined commodity demand. 
-Its goal is to minimize the time where demand exceeds supply for any commodity.
-The demand-driven deployment capabilities is referred to as d3ploy. 
+Its goal is to meet supply for any commodity while minimizing oversupply.
+This demand-driven deployment capability is referred to as \texttt{d3ploy}. 
 
 At each time step, demand and supply for each commodity is predicted for the 
-following time step. Based on the prediction, facilities will be deployed to 
+following time step. Based on the prediction, \texttt{d3ploy} deploys facilities to 
 meet predicted demand. 
 The demand and supply predictions are governed by four types of algorithms: 
 non-optimizing, time series forecasting, deterministic optimizing and machine 
@@ -85,12 +85,12 @@ The results of the numerical experiments are compared based on number of time
 steps where demand exceeds supply, residuals and chi goodness of fit test. 
 The non-optimizing methods were effective for predicting the driving commodity.
 Whereas, the time series forecasting, deterministic and machine learning 
-algorithms were more effective for predicting derived demand for front and 
+algorithms effectively predicted derived demand for front and 
 back deployment. 
 
-To evaluate d3ploy's capability in \Cyclus, transition scenarios 
+To demonstrate \texttt{d3ploy}'s capability in \Cyclus, transition scenarios 
 are simulated using \Cyclus with and without it. 
-The use of d3ploy automates the deployment of supporting facilities and thus, 
+\texttt{d3ploy} automates the deployment of supporting facilities and thus, 
 improves the ease of setting up transition scenarios. 
 Users of the \Cyclus code can now run fuel cycle and transition scenarios simply 
 by defining a driving commodity and its demand curve. 
