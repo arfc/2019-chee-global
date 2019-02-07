@@ -1,6 +1,6 @@
 \documentclass{anstrans}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Demand Driven Deployment Capabilities in \Cyclus}
+\title{Numerical Experiments for Demand Driven Deployment Capabilities in \Cyclus}
 \author{Gwendolyn J. Chee, Jin Whan Bae, Robert R. Flanagan, Roberto Fairhurst and Kathryn D. Huff}
 
 \institute{
@@ -77,22 +77,23 @@ non-optimizing, time series forecasting, deterministic optimizing and machine
 learning. 
 The choice of which prediction algorithm to use is a user-input. 
 
-The prediction algorithms are compared using numerical experiments. 
-The numerical experiments are in the form of fuel cycle scenarios where the
+The prediction algorithms are compared using numerical experiments that are 
+in the form of fuel cycle scenarios in which the
 demand driving commodity, its demand curve and the combination of facilities 
 in the scenario are varied. 
+The types of fuel cycle scenarios studied include front-end facility deployment, 
+back-end facility deployment, closed fuel cycle deployment and transition 
+scenario deployment scenarios.
 The results of the numerical experiments are compared based on number of time
-steps where demand exceeds supply, residuals and $\chi^2$ goodness of fit test. 
-The non-optimizing methods were effective for predicting appropriate 
-facility deployment for supplying the driving commodity.
+steps where demand exceeds supply, residuals and $\chi^2$ goodness of fit test.
+The non-optimizing methods were effective for predicting 
+appropriate facility deployment for supplying the driving commodity.
 The time series forecasting, deterministic and machine learning 
-algorithms effectively predicted derived demand for front end and 
-back end deployment. 
+algorithms were effective in predicting appropriate facility deployment for 
+supplying front end and back end commodities. 
 
-To demonstrate \texttt{d3ploy}'s capability in \Cyclus, transition scenarios 
-are simulated using \Cyclus with and without it. 
-\texttt{d3ploy} automates the deployment of supporting facilities and thus, 
-improves the ease of setting up transition scenarios. 
+\texttt{D3ploy} automates the deployment of supporting facilities and thus, 
+improves the ease of setting up fuel cycle scenarios. 
 Users of the \Cyclus code can now run fuel cycle and transition scenarios simply 
 by defining a driving commodity and its demand curve. 
 
