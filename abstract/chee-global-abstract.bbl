@@ -1,0 +1,36 @@
+\begin{thebibliography}{1}
+\newcommand{\enquote}[1]{``#1''}
+
+\bibitem{huff_current_2017}
+\MakeUppercase{K.~D. Huff}, \MakeUppercase{J.~W. Bae}, \MakeUppercase{R.~R.
+  Flanagan}, and \MakeUppercase{A.~M. Scopatz}, \enquote{Current {Status} of
+  {Predictive} {Transition} {Capability} in {Fuel} {Cycle} {Simulation},} p.~11
+  (2017).
+
+\bibitem{huff_fundamental_2016}
+\MakeUppercase{K.~D. Huff}, \MakeUppercase{M.~J. Gidden}, \MakeUppercase{R.~W.
+  Carlsen}, \MakeUppercase{R.~R. Flanagan}, \MakeUppercase{M.~B. McGarry},
+  \MakeUppercase{A.~C. Opotowsky}, \MakeUppercase{E.~A. Schneider},
+  \MakeUppercase{A.~M. Scopatz}, and \MakeUppercase{P.~P.~H. Wilson},
+  \enquote{Fundamental concepts in the {Cyclus} nuclear fuel cycle simulation
+  framework,} \emph{Advances in Engineering Software}, \textbf{94}, 46--59
+  (Apr. 2016), arXiv: 1509.03604.
+
+\bibitem{flanagan_methods_2019}
+\MakeUppercase{R.~R. Flanagan}, \MakeUppercase{J.~W. Bae}, \MakeUppercase{K.~D.
+  Huff}, \MakeUppercase{G.~J. Chee}, and \MakeUppercase{R.~Fairhurst},
+  \enquote{Methods for {Automated} {Fuel} {Cycle} {Facility} {Deployment}
+  (submitted),} in \enquote{Proceedings of the {American} {Nuclear} {Society}
+  2019 {Global} {Conference},} American Nuclear Society, Seattle, WA, United
+  States (Sep. 2019).
+
+\bibitem{fairhurst_implementation_2019}
+\MakeUppercase{R.~E. Fairhurst}, \MakeUppercase{G.~J. Chee},
+  \MakeUppercase{J.~W. Bae}, \MakeUppercase{R.~R. Flanagan}, and
+  \MakeUppercase{K.~D. Huff}, \enquote{Implementation of {Demand} {Driven}
+  {Deployment} {Capabilities} in {Cyclus} for {Transition} {Scenarios}
+  (submitted),} in \enquote{Proceedings of the {American} {Nuclear} {Society}
+  2019 {Global} {Conference},} American Nuclear Society, Seattle, WA, United
+  States (Sep. 2019).
+
+\end{thebibliography}

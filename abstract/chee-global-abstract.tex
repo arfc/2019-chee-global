@@ -1,0 +1,111 @@
+\documentclass{anstrans}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Demonstration of Demand Driven Deployment Capabilities in \Cyclus}
+\author{Gwendolyn J. Chee$^1$, Jin Whan Bae$^1$, Robert R. Flanagan$^2$, Roberto E. Fairhurst$^1$ and Kathryn D. Huff$^1$}
+
+\institute{
+$^1$Dept. of Nuclear, Plasma and Radiological Engineering, University of Illinois at Urbana-Champaign \\
+$^2$Nuclear Engineering Program, University of South Carolina \\
+
+gchee2@illinois.edu
+}
+
+%%%% packages and definitions (optional)
+\usepackage{graphicx} % allows inclusion of graphics
+\usepackage{booktabs} % nice rules (thick lines) for tables
+\usepackage{microtype} % improves typography for PDF
+\usepackage{xspace}
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{placeins}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
+\makeglossaries
+\newcommand{\SN}{S$_N$}
+\renewcommand{\vec}[1]{\bm{#1}} %vector is bold italic
+\newcommand{\vd}{\bm{\cdot}} % slightly bold vector dot
+\newcommand{\grad}{\vec{\nabla}} % gradient
+\newcommand{\ud}{\mathop{}\!\mathrm{d}} % upright derivative symbol
+\newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
+\newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
+\newcolumntype{c}{>{\hsize=.56\hsize}X}
+\newcolumntype{b}{>{\hsize=.7\hsize}X}
+\newcolumntype{s}{>{\hsize=.74\hsize}X}
+\newcolumntype{f}{>{\hsize=.1\hsize}X}
+\newcolumntype{a}{>{\hsize=.45\hsize}X}
+\usepackage{titlesec}
+\titleformat*{\subsection}{\normalfont}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Abstract}
+\gls{NFC} simulation scenarios are constrained objective functions. 
+The objectives are systemic demands such as "1\% power growth", while an 
+example of a constraint is the availability of new nuclear technology. 
+To add ease in setting up nuclear fuel cycle simulations, \gls{NFC} simulators 
+should bring demand responsive deployment decisions into the dynamics of the 
+simulation logic \cite{huff_current_2017}. 
+While automated power production deployment is common in most fuel cycle 
+simulators, automated deployment of supportive fuel cycle 
+facilities is non-existent. 
+Instead, the user must detail the deployment timeline of all supporting 
+facilities or have infinite capacity support facilities. 
+Thus, a next generation \gls{NFC} simulator should predictively and 
+automatically deploy fuel cycle facilities to meet user defined power demand. 
+This paper discusses demonstration of a new solution, \texttt{d3ploy}, enabling 
+demand driven deployment in \Cyclus. 
+
+\Cyclus is an agent-based nuclear fuel cycle simulation framework 
+\cite{huff_fundamental_2016}. 
+Each entity (i.e. Region, Institution, or Facility) in the fuel cycle is modeled 
+as an agent. 
+Institution agents
+are responsible for deploying and decommissioning facility agents and
+can represent a legal operating organization such as a 
+utility, government, etc \cite{huff_fundamental_2016}. 
+
+The Demand-Driven \Cycamore Archetypes project (NEUP-FY16-10512) aims to 
+develop \Cyclus's demand-driven deployment capabilities. 
+This capability is developed in the form of a \Cyclus Institution agent that 
+deploys facilities to meet the front-end and back-end fuel cycle demands
+based on a user-defined commodity demand. 
+Its goal is to meet supply for any commodity while minimizing oversupply.
+This demand-driven deployment capability is referred to as \texttt{d3ploy}. 
+
+At each time step, \texttt{d3ploy} predicts demand and supply of each 
+commodity for the following time step.
+Then, \texttt{d3ploy} deploys facilities to 
+meet predicted demand. 
+Three interchangeable algorithm types govern demand and supply predictions: 
+non-optimizing, time series forecasting, and deterministic optimizing. 
+
+We compared the prediction algorithms with fuel cycle scenarios in which the
+demand driving commodity, its demand curve, and the combination of facilities 
+in the scenario are varied. 
+Specifics about the prediction algorithms are discussed in 
+\cite{flanagan_methods_2019}. 
+We demonstrated deployment capabilities in \texttt{d3ploy} for scenarios 
+requiring front-end facility deployment, back-end facility deployment, 
+closed fuel cycle deployment, and transition scenario deployment.
+Each scenario was run with each prediction algorithm, and the results 
+were compared based on the number of time
+steps in which demand exceeds supply and the $\chi^2$ goodness of fit test.
+These comparisons demonstrated that the non-optimizing methods
+effectively predicted appropriate facility deployment for supplying the 
+driving commodity.  
+These comparisons also demonstrated that the time series forecasting and 
+deterministic algorithms effectively predicted appropriate 
+facility deployment for supplying front-end and back-end commodities. 
+The full paper will compare these prediction algorithms quantitatively, 
+determine the advantages and disadvantages of each, and provide recommendations 
+for which algorithm is desirable for use in modeling transition scenarios. 
+Demonstration of how \texttt{d3ploy} improves the analysis of transition scenarios 
+is discussed in \cite{fairhurst_implementation_2019}. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{ans}
+\bibliography{bibliography}
+\end{document}
+
