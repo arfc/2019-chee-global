@@ -38,13 +38,52 @@ gchee2@illinois.edu
 \titleformat*{\subsection}{\normalfont}
 
 \begin{document}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
+- Description of the current state of nuclear fuel cycle simulators
+(lacking automatic deployment) 
+
+- Why there is a need for a functionality like d3ploy 
+
+- The objectives of this paper: explain the capabilities of d3ploy, 
+demonstrate how d3ploy is able to meet the primary objective of 
+minimizing undersupply and undercapacity, demonstrate d3ploy's use 
+in a transition scenario.  
+
 \section{Background}
+- What is \Cyclus 
+
+- What is d3ploy in relation to \Cyclus 
+
 \section{Method}
+- describe the capabilities of d3ploy and why they were developed
+this way 
+
+- explain the performance tests and what they are meant to demonstrate
+and why each of them was performed. 
+
+- explain why a supply/capacity buffer was introduced. 
+
 \section{Results}
+- Show the results for each performance test with and without 
+supply and capacity buffers. (Scenario 3 and 7 in particular, 
+these are the scenarios with a refueling reactor)
+
+- Show the results for one transition scenario with and without
+d3ploy. Explain how the use of d3ploy fills the gaps in the 
+capability of \Cyclus for modeling transition scenarios. 
+[Include a figure of the commodity flow in the transition scenario]  
+
+- highlight the importance of a supply/capacity buffer for 
+ensuring that there is enough of each commodity when there is 
+a spike due to refueling of a reactor etc. 
+
 \section{Conclusion}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+- d3ploy rules! 
+
+\section{Acknowledgements}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \bibliographystyle{ans}
 \bibliography{bibliography}
 \end{document}
