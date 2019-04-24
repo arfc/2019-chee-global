@@ -1,0 +1,141 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{caption} % for table captions
+\usepackage{amsmath} % for multi-line equations and piecewises
+\DeclareMathOperator{\sign}{sign}
+\usepackage{graphicx}
+\usepackage{relsize}
+%\usepackage{textcomp}
+\usepackage{xspace}
+\usepackage{verbatim} % for block comments
+%\usepackage{subfig} % for subfigures
+\usepackage{enumitem} % for a) b) c) lists
+\newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
+\newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
+\newcommand{\deploy}{\texttt{d3ploy}\xspace}%
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\newcolumntype{b}{X}
+\newcolumntype{f}{>{\hsize=.15\hsize}X}
+\newcolumntype{s}{>{\hsize=.5\hsize}X}
+\newcolumntype{m}{>{\hsize=.75\hsize}X}
+\newcolumntype{r}{>{\hsize=1.1\hsize}X}
+\usepackage{titling}
+\usepackage[hang,flushmargin]{footmisc}
+\renewcommand*\footnoterule{}
+\usepackage{tikz}
+
+
+\usetikzlibrary{shapes.geometric,arrows}
+\tikzstyle{process} = [rectangle, rounded corners, 
+minimum width=1cm, minimum height=1cm,text centered, draw=black, 
+fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+
+\graphicspath{{figures/}}
+\title{DDCA GLOBAL}
+\author{Gwendolyn J. Chee, Roberto E. Fairhurst, 
+\\ \vspace{0.5em} Robert R. Flanagan, Kathryn D. Huff}
+
+
+\begin{document}
+	\begin{titlepage}
+	\maketitle
+	\thispagestyle{empty}
+	\end{titlepage}
+
+%----------------------------------------------------------------%
+\section{Introduction}
+\gls{NFC} simulation scenarios are constrained objective functions. 
+The objectives are systemic demands such as "1\% power growth", 
+while an example of a constraint is the availability of new nuclear 
+technology. 
+To add ease in setting up nuclear fuel cycle simulations, \gls{NFC}
+simulators should bring demand responsive deployment decisions into 
+the dynamics of the simulation logic \cite{huff_current_2017}. 
+While automated power production deployment is common in most fuel 
+cycle simulators, automated deployment of supportive fuel cycle 
+facilities is non-existent. 
+
+*- The capabilities in current fuel cycle sims (ORION, etc)
+
+Instead, the user must detail the deployment timeline of all 
+supporting facilities or have infinite capacity support facilities. 
+Thus, a next generation \gls{NFC} simulator should predictively and 
+automatically deploy fuel cycle facilities to meet user defined 
+power demand. 
+This paper discusses demonstration of a new solution, 
+\texttt{d3ploy}, enabling demand driven deployment in \Cyclus. 
+
+\Cyclus is an agent-based nuclear fuel cycle simulation framework 
+\cite{huff_fundamental_2016}. 
+Each entity (i.e. Region, Institution, or Facility) in the fuel 
+cycle is modeled as an agent. 
+Institution agents
+are responsible for deploying and decommissioning facility agents 
+and can represent a legal operating organization such as a 
+utility, government, etc \cite{huff_fundamental_2016}. 
+
+The Demand-Driven \Cycamore Archetypes project (NEUP-FY16-10512) 
+aims to develop \Cyclus's demand-driven deployment capabilities. 
+This capability is developed in the form of a \Cyclus Institution
+agent that deploys facilities to meet the front-end and back-end 
+fuel cycle demands based on a user-defined commodity demand. 
+Its goal is to meet supply for any commodity while minimizing 
+oversupply.
+This demand-driven deployment capability is referred to as 
+\texttt{d3ploy}. 
+
+
+- The objectives of this paper: explain the capabilities of d3ploy, 
+demonstrate how d3ploy is able to meet the primary objective of 
+minimizing undersupply and undercapacity, demonstrate d3ploy's use 
+in a transition scenario.  
+
+*- What is \Cyclus 
+
+*- What is d3ploy in relation to \Cyclus 
+
+\section{Method}
+- describe the capabilities of d3ploy and why they were developed
+this way 
+
+- explain the performance tests and what they are meant to 
+demonstrate and why each of them was performed. 
+
+- explain each system parameter that will be varied in the results.
+System parameters include: supply/capacity buffer, varying calc 
+methods for each commodity.  
+
+\section{Results}
+- Show the results for each performance test with and without 
+supply and capacity buffers. (Scenario 3 and 7 in particular, 
+these are the scenarios with a refueling reactor)
+
+- Show the results for one transition scenario with and without
+d3ploy. Explain how the use of d3ploy fills the gaps in the 
+capability of \Cyclus for modeling transition scenarios. 
+[Include a figure of the commodity flow in the transition scenario]  
+
+- highlight the importance of a supply/capacity buffer for 
+ensuring that there is enough of each commodity when there is 
+a spike due to refueling of a reactor etc. 
+
+\section{Conclusion}
+- d3ploy rules! 
+
+\section{Acknowledgements}
+
+%----------------------------------------------------------------%
+
+\pagebreak 
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}
+
+
