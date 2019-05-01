@@ -86,9 +86,15 @@ This capability is developed in the form of a \Cyclus Institution
 agent that deploys facilities to meet the front-end and back-end 
 fuel cycle demands based on a user-defined commodity demand. 
 Its goal is to meet supply for any commodity while minimizing 
-oversupply.
+undersupply.
 This demand-driven deployment capability is referred to as 
-\texttt{d3ploy}. 
+\deploy. 
+
+In this paper, we will explain the capabilities of \deploy, 
+demonstrate how \deploy can be used in various simulations (flat 
+power demand, increasing power demand, sinusoidal power demand)
+to meet the primary objective of minimizing undersupply of all 
+commodities in the simulations, and finally give  . 
 
 
 - The objectives of this paper: explain the capabilities of d3ploy, 
@@ -96,20 +102,86 @@ demonstrate how d3ploy is able to meet the primary objective of
 minimizing undersupply and undercapacity, demonstrate d3ploy's use 
 in a transition scenario.  
 
-*- What is \Cyclus 
 
-*- What is d3ploy in relation to \Cyclus 
-
-\section{Method}
+\section{D3ploy capabilities}
 - describe the capabilities of d3ploy and why they were developed
 this way 
 
-- explain the performance tests and what they are meant to 
+At each time step, \deploy predicts demand and supply of each 
+commodity for the following time step.
+Then, \deploy deploys facilities to meet predicted demand. 
+\deploy's primary objective is to minimize the number of time 
+steps of undersupply of any commodity. 
+
+Within \deploy, there are two institutions: 
+\texttt{DemandDrivenDeploymentInst} and \texttt{SupplyDrivenDeploymentInst}. 
+The prior is used for the front-end of the fuel cycle and the latter is used 
+for the back-end. 
+Front-end facilities includes any facility that comes before the reactor, 
+including the reactor such as a fuel fabrication facility etc.  
+Back-end facilities includes any facility that comes after the reactor, 
+such as a reprocessing facility etc. 
+The reason for this separation is to let facilities have the choice 
+to demand for supply or demand for capacity. 
+For example, in the front end facilities, the reactor has a demand for 
+fuel, using \texttt{DemandDrivenDeploymentInst}, it triggers the fuel 
+fabrication facility to deploy facilities to create supply to meet 
+the demand. 
+Whereas, for the back end facilities, the reactor generates spent fuel 
+, there is a demand for waste repository facility to accept the 
+spent fuel, using \texttt{SupplyDrivenDeploymentInst}, it triggers the
+deployment of a waste repository to create a capacity for spent fuel 
+to meet the supply. 
+
+\subsection{Prediction Algorithms}
+Three interchangeable algorithm types govern demand and supply 
+predictions: non-optimizing, deterministic optimizing and stochastic
+optimizing. 
+
+There are three methods implemented for the non-optimizing model: 
+Autoregressive moving average (ARMA), autoregressive 
+conditional heteroskedasticity (ARCH).
+There are four methods implemented for the deterministic optimizing model: 
+Polynomial fit regression, simple exponential smoothing,  
+triple exponential smoothing (holt-winters) and fast fourier 
+transform (fft). 
+There is one method implemented for stochastic optimizing model: 
+stepwise seasonal.  
+
+\subsection{User defined input variables}
+The user is able to input specific variables to customize their
+simulation. 
+Descriptions of each input variable can be found in the 
+readme of the repository [https://github.com/arfc/d3ploy]. 
+*- explain each system parameter that will be varied in the results.
+System parameters include: supply/capacity buffer, varying calc 
+methods for each commodity.   
+
+Essentially, the user must define the facilities they want the 
+institution to control and their corresponding capacities. 
+The user must also define the driving commodity, its demand 
+equation and what method they want the institution to predict 
+demand and supply with. 
+
+They also have the option to give an `equation` that governs
+preference for that facility compared to other facilities that 
+provide the same commodity. 
+The user also has an option to constrain deployment of a facility 
+until there is a accumulation of a specific commodity.   
+The user also has an option to provide a supply or capacity buffer 
+for each commodity, which is an amount above demand/supply the user 
+wants the supply/capacity to meet. 
+
+\section{Methods for demonstration of d3ploy capabilities}
+*- explain the performance tests and what they are meant to 
 demonstrate and why each of them was performed. 
 
-- explain each system parameter that will be varied in the results.
-System parameters include: supply/capacity buffer, varying calc 
-methods for each commodity.  
+Various simulations are set up to demonstrate \deploy's 
+capabilities. 
+A delicate balance between the various system parameters must be 
+met for each type of simulation to ideally meet the goal of 
+minimizing undersupply and undercapacity for the various 
+commodities. 
 
 \section{Results}
 - Show the results for each performance test with and without 
