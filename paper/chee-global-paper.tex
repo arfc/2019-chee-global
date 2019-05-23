@@ -59,8 +59,6 @@ supporting facilities or have infinite capacity support facilities.
 Thus, a next generation \gls{NFC} simulator should predictively and 
 automatically deploy fuel cycle facilities to meet user defined 
 power demand. 
-This paper discusses demonstration of a new solution, 
-\texttt{d3ploy}, enabling demand driven deployment in \Cyclus. 
 
 \Cyclus is an agent-based nuclear fuel cycle simulation framework 
 \cite{huff_fundamental_2016}. 
@@ -88,9 +86,9 @@ In this paper, we will explain the capabilities of \deploy,
 demonstrate how \deploy is used
 to meet the primary objective of minimizing undersupply of all 
 commodities in a simulation. 
-Constant power, linear power growth and sinusoidal power
+Constant power, linearly increasing and sinusoidal power demand
 transition scenarios are demonstrated. 
-Recommendations and insights are also discussed to inform parameter 
+Insights are also discussed to inform parameter 
 input decisions for future work in setting up 
 larger transition scenarios that include many facilities. 
 
@@ -231,7 +229,7 @@ The buffer can be defined as a percentage value or an absolute value.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Demonstration of d3ploy capabilities}
-Constant, linearly growing and sinusoidal power demand simulations
+Constant, linearly increasing and sinusoidal power demand simulations
 are shown to demonstrate \deploy's capabilities. 
 A balance between the various system parameters must be 
 met for each type of simulation to meet the goal of 
@@ -251,7 +249,7 @@ steps.
 \Deploy deploys reactor facilities of \texttt{new reactor} type
 to meet unmet demand for power that occurs when the ten initial 
 reactor facilities begin to decommission. 
-All the simulations use deploys facilities based on the relationship
+All the simulations deploy facilities based on the relationship
 between predicted demand and installed capacity. 
 This capability was discussed in the previous section.  
 Table \ref{tab:transition-scenario-all} shows the simulation 
@@ -328,7 +326,7 @@ demand transition scenarios that include many facilities.
 \end{table*}
 
 In this section, a constant power transition scenario is shown. 
-Recommendations and insights on specific parameters are 
+Insights on specific parameters are 
 discussed. 
 Table \ref{tab:transition-scenario-constant-power} shows the 
 simulation parameters used in this transition scenario. 
@@ -342,7 +340,7 @@ Table \ref{tab:transition-scenario-results} shows the number of time
 steps where there is undersupply for each commodity in this scenario. 
 In figure \ref{fig:constanttransition-power}, there are no time steps
 where the supply of power falls under demand.
-A combination of using the fast fourier transform method for predicting 
+By using a combination of using the fast fourier transform method for predicting 
 demand and setting the supply buffer to 3000MW (the capacity of 3 reactors), 
 the user is able to minimize the number of time steps where there 
 is an undersupply of every commodity. 
@@ -351,14 +349,12 @@ of buffer to use for each commodity to ensure that there is no
 undersupply based on the nuances of the facility type: 
 refueling in a reactor etc. 
 
-Figure \ref{fig:constanttransition-fuel} shows the demand and supply 
-for fuel in the simulation. 
-A facility with a large capacity of fuel is initially
+In figure \ref{fig:constanttransition-fuel},
+a facility with a large throughput of fuel is initially
 deployed to meet the large initial fuel demand for the starting
 up of ten reactors. 
 By having an initial facility with a large throughput
-to exist for the first few time steps in the simulation to meet 
-the initial demand, 
+exist for the first few time steps in the simulation,
 \deploy is prevented from deploying a large amount of supporting
 facilities that end up being redundant at the later parts of 
 the simulation.   
@@ -424,18 +420,17 @@ Figures \ref{fig:growingtransition-power}, \ref{fig:growingtransition-fuel}
 and \ref{fig:growingtransition-spentfuel} demonstrate the capability 
 of \deploy to deploy reactor and supporting facilities to meet the user 
 determined power demand and subsequently demanded secondary commodities 
-with minimal time steps where there is an undersupply for a linearly 
-increasing power demand. 
-For a linearly increasing power demand, the fast fourier 
-transform method for predicting power demand is used 
+for a linearly increasing power demand. 
+The fast fourier transform method for predicting power demand is used for 
+this scenario
 which is similar to what was used for the constant power demand 
 transition scenario. 
 A smaller supply buffer for power was used. 
 
 \subsection{\textbf{Transition Scenario: Sinusoidal Demand}}
-In this section, a transition scenario where there is a sinusoidal
+In this section, a transition scenario with sinusoidal
 power demand is shown. 
-A sinusoidal power demand is a reflection of the power demand in 
+A sinusoidal power demand is the reflection of power demand in 
 the real world where power usage is higher in the winter and summer
 and is smaller in the spring and fall. 
 Table \ref{tab:transition-scenario-sine-power} shows the 
@@ -445,8 +440,7 @@ Figures \ref{fig:sinetransition-power}, \ref{fig:sinetransition-fuel}
 and \ref{fig:sinetransition-spentfuel} demonstrate the capability 
 of \deploy to deploy reactor and supporting facilities to meet the user 
 determined power demand and subsequently demanded secondary commodities 
-with minimal time steps where there is an undersupply for a sinusoidal 
-power demand. 
+for a sinusoidal power demand. 
 
 For a sinusoidal power demand, the use of the triple exponential method
 for predicting demand is more effective than the 
@@ -503,14 +497,14 @@ This paper describes the capabilities of \deploy, demonstrates
 the use of \deploy for an assortment of transition scenarios: 
 constant power demand, linearly increasing power demand and
 sinusoidal power demand.  
-It also provides insights on parameter inputs when setting up larger
-power demand transition scenarios that include many facilities. 
+It also provides insights on parameter inputs to ease the
+setting up of larger transition scenarios that include many facilities. 
 Future work includes setting up similar power demand transition 
 scenarios for extended nuclear fuel cycles that incorporate reprocessing 
 facilities etc. 
 A more realistic transition scenario could be explored such as an 
 increasing power demand that has a sinusoidal pattern to represent 
-seasons in a year. 
+seasons in a year for a growing power demand trend. 
 
 \nopagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
