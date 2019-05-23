@@ -462,11 +462,11 @@ forecasting data points for repetitive seasonal series of data.
     \begin{tabular}{|l|l|p{4.5cm}|}
     \hline
                                      & \textbf{Parameters}    & \textbf{Description} \\ \hline
-    \textbf{Overall}& Demand Equation & time<40: 10000 MW, time>40: 250*t MW \\ \hline
+    \textbf{Overall}& Demand Equation & $1000sin(\frac{\pi*t}{3})+10000$ \\ \hline
     \multirow{2}{*}{\textbf{Power Commodity}} & Prediction Method      &  Triple Exponential Smoothing \\ \cline{2-3} 
                                      & Supply Buffer          &  2000 MW (2 reactor capacities)\\ \hline
     \multirow{2}{*}{\textbf{Fuel Commodity}}  & Prediction Method      &  Moving Average\\ \cline{2-3}
-                                     & Supply Buffer & 0 kg \\ \hline
+                                     & Supply Buffer & 1000 kg \\ \hline
     \multirow{2}{*}{\textbf{Spent Fuel Commodity}}  & Prediction Method      & Fast Fourier Transform\\ \cline{2-3}
                                      & Capacity Buffer & 0 kg \\ \hline
     \end{tabular}
