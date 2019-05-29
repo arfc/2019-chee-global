@@ -43,74 +43,70 @@ gchee2@illinois.edu
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-\gls{NFC} simulation scenarios are constrained objective functions. 
-The objectives are systemic demands such as "1\% power growth", 
-while an example of a constraint is the availability of new nuclear 
-technology. 
-To add ease in setting up nuclear fuel cycle simulations, \gls{NFC}
+For many fuel cycle simulators, it is currently up to the user 
+to define a deployment scheme of supporting facilities to ensure 
+that there is no gap in the supply chain. 
+To ease setting up nuclear fuel cycle simulations, \gls{NFC}
 simulators should bring demand responsive deployment decisions into 
 the dynamics of the simulation logic \cite{huff_current_2017}. 
-While automated power production deployment is common in most fuel 
-cycle simulators, automated deployment of supportive fuel cycle 
-facilities is non-existent. 
-
-Instead, the user must detail the deployment timeline of all 
-supporting facilities or have infinite capacity support facilities. 
 Thus, a next generation \gls{NFC} simulator should predictively and 
 automatically deploy fuel cycle facilities to meet user defined 
 power demand. 
 
 \Cyclus is an agent-based nuclear fuel cycle simulation framework 
 \cite{huff_fundamental_2016}. 
-Each entity (i.e. Region, Institution, or Facility) in the fuel 
-cycle is modeled as an agent. 
-Institution agents
-are responsible for deploying and decommissioning facility agents 
-and can represent a legal operating organization such as a 
+In \Cyclus, each entity (i.e. Region, Institution, or Facility) in the 
+fuel cycle is an agent. 
+Region agents represent geographical or political areas that institution
+and facility agents can be grouped into. 
+Institution agents control the 
+deployment and decommission of facility agents 
+and represents legal operating organizations such as a 
 utility, government, etc \cite{huff_fundamental_2016}. 
+Facility agents represent nuclear fuel cycle facilities. 
+\Cycamore \cite{carlsen_cycamore_2014}
+provides agents to represent process physics of various 
+components in the nuclear fuel cycle (e.g. mine, fuel enrichment 
+facility, reactor). 
 
 The Demand-Driven \Cycamore Archetypes project 
 
 \noindent
 (NEUP-FY16-10512) 
 aims to develop \Cyclus's demand-driven deployment capabilities. 
-This capability is developed in the form of a \Cyclus Institution
+This capability is added as a \Cyclus Institution
 agent that deploys facilities to meet the front-end and back-end 
 fuel cycle demands based on a user-defined commodity demand. 
-Its goal is to meet supply for any commodity while minimizing 
-undersupply.
-This demand-driven deployment capability is referred to as 
+This demand-driven deployment capability is called 
 \deploy. 
 
-In this paper, we will explain the capabilities of \deploy, 
-demonstrate how \deploy is used
-to meet the primary objective of minimizing undersupply of all 
-commodities in a simulation. 
-Constant power, linearly increasing and sinusoidal power demand
+In this paper, we explain the capabilities of \deploy, 
+demonstrate how \deploy minimizes undersupply of all 
+commodities in a simulation while meeting key simulation 
+constraints. 
+Constant, linearly increasing, and sinusoidal power demand
 transition scenarios are demonstrated. 
-Insights are also discussed to inform parameter 
+Insights are discussed to inform parameter 
 input decisions for future work in setting up 
 larger transition scenarios that include many facilities. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{D3ploy capabilities}
-\subsection{\textbf{Core Capability of \deploy}}
 At each time step, \deploy predicts demand and supply of each 
 commodity for the next time step.
 Then, \deploy deploys facilities to meet predicted demand. 
-\Deploy's primary objective is to minimize the number of time 
+\Deploy's primary objective is minimizing the number of time 
 steps of undersupply of any commodity. 
+Figure shows \deploy's logic flow. 
 
-When there is a predicted undersupply of a commodity, \deploy looks 
-at what facilities it has that provides that commodity and 
-will deploy the fewest number of facilities
+When there exists a predicted undersupply of a commodity, 
+\deploy will deploy the fewest number of available facilities
 to meet the predicted undersupply. 
-This logic is available in \texttt{solver.py}. 
 
 \subsection{\textbf{Basic User-Defined Input Variables}}
-The user is able to input specific variables to customize their
+The user inputs specific variables to customize their
 simulation. 
-Descriptions of each input variable can be found in the 
+Descriptions of each input variable is found in the 
 README of the \deploy github repository \cite{d3ploy_doi_2019}.
 
 Essentially, the user must define the facilities for the 
@@ -118,41 +114,54 @@ institution to control and their corresponding capacities.
 The user must also define the driving commodity, its demand 
 equation and what method the institution predicts 
 demand and supply with. 
+For example, the user can define a demand equation for power of 
+$1000t$ and \deploy will deploy available reactor and supporting 
+facilities to meet the defined power demand. 
 
-They also have the option to give a time dependent equation that governs
+The user can also provide a time dependent equation that governs
 preference for that facility compared to other facilities that 
 provide the same commodity. 
+For example, the user can define a \gls{LWR} and a \gls{SFR} to have
+preferences of $101-t$ and $t$ respectively. 
+The \gls{LWR} will have a larger preference than the \gls{SFR} up to 
+time step 50.
+Therefore, when there is a demand for power, a \gls{LWR}
+will be deployed before time step 51 
+while a \gls{SFR} will be deployed after time step 50. 
+
 The user also has an option to constrain deployment of a facility 
-until there is a accumulation of the inventory of a specific commodity.  
+until a sizable inventory of a specific commodity is accumulated.  
 The user can also define an initial facility list of facilities that 
 are present in the institution at the beginning of the simulation. 
 
 \subsection{\textbf{Prediction Algorithms}}
 Three interchangeable algorithm types govern demand and supply 
-predictions: non-optimizing, deterministic optimizing and stochastic
+predictions: non-optimizing, deterministic optimizing, and stochastic
 optimizing. 
 
-There are three methods implemented for the non-optimizing model: 
-Autoregressive moving average (ARMA), autoregressive 
+Three methods were implemented for the non-optimizing model: 
+moving average (MA)
+autoregressive moving average (ARMA), autoregressive 
 conditional heteroskedasticity (ARCH).
-There are four methods implemented for the deterministic optimizing model: 
+Four methods were implemented for the deterministic optimizing model: 
 Polynomial fit regression, simple exponential smoothing,  
-triple exponential smoothing (holt-winters) and fast fourier 
+triple exponential smoothing (holt-winters), and fast fourier 
 transform (fft). 
-There is one method implemented for stochastic optimizing model: 
+One method was implemented for stochastic optimizing model: 
 stepwise seasonal.  
 
 The user can choose which prediction algorithm governs each specific 
 \deploy facility. 
-The effectiveness of a prediction algorithm is dependent on the type 
-of power demand in a scenario and the type of commodity. 
-For example, the triple exponential smoothing method is most effective
+The effectiveness of a prediction algorithm depends on the type 
+of power demand in a scenario and the type of commodity (demand 
+driving commodity vs non-driving commodity, demand driven 
+deployment vs supply driven deployment etc.). 
+For example, the most effective method
 for predicting demand and supply for the power commodity in a scenario  
-with a sinusoidal power demand compared to a linearly increasing power 
-demand.
-Whereas, the fast fourier transform method is more effective than triple 
-exponential smoothing for the non-power commodities in the same 
-scenario.  
+with a sinusoidal power demand is the triple exponential smoothing method. 
+Whereas, for the non-driving commodities in the same 
+scenario, the fast fourier transform method is more effective than triple 
+exponential smoothing. 
 
 \begin{table*}[htb]
     \centering
@@ -285,19 +294,17 @@ demand transition scenarios that include many facilities.
     \centering
     \begin{subfigure}[t]{\textwidth}
     \centering
-        \includegraphics[width=0.9\linewidth]{figures/constanttransition-power.png} 
+        \includegraphics[width=0.8\linewidth]{figures/constanttransition-power.png} 
         \caption{Power demand and supply plot}
         \label{fig:constanttransition-power}
     \end{subfigure}
-    \vspace{1cm}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/constanttransition-fuel.png} 
         \caption{Fuel demand and supply plot}
 	    \label{fig:constanttransition-fuel}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/constanttransition-spentfuel.png} 
         \caption{Spent Fuel demand and supply plot}
@@ -390,19 +397,17 @@ to predict this sudden drop in demand.
     \centering
     \begin{subfigure}[t]{\textwidth}
     \centering
-        \includegraphics[width=0.9\linewidth]{figures/growingtransition-power.png} 
+        \includegraphics[width=0.8\linewidth]{figures/growingtransition-power.png} 
         \caption{Power demand and supply plot}
         \label{fig:growingtransition-power}
     \end{subfigure}
-    \vspace{1cm}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/growingtransition-fuel.png} 
         \caption{Fuel demand and supply plot}
 	    \label{fig:growingtransition-fuel}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/growingtransition-spentfuel.png} 
         \caption{Spent Fuel demand and supply plot}
@@ -470,19 +475,17 @@ forecasting data points for repetitive seasonal series of data.
     \centering
     \begin{subfigure}[t]{\textwidth}
     \centering
-        \includegraphics[width=0.9\linewidth]{figures/sinetransition-power.png} 
+        \includegraphics[width=0.8\linewidth]{figures/sinetransition-power.png} 
         \caption{Power demand and supply plot}
         \label{fig:sinetransition-power}
     \end{subfigure}
-    \vspace{1cm}
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/sinetransition-fuel.png} 
         \caption{Fuel demand and supply plot}
 	    \label{fig:sinetransition-fuel}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.45\textwidth}
+    \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/sinetransition-spentfuel.png} 
         \caption{Spent Fuel demand and supply plot}
