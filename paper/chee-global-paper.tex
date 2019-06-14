@@ -60,7 +60,7 @@ To ease setting up nuclear fuel cycle simulations, \gls{NFC}
 simulators should bring demand responsive deployment decisions into 
 the dynamics of the simulation logic \cite{huff_current_2017}. 
 Thus, a next generation \gls{NFC} simulator should predictively and 
-automatically deploy fuel cycle facilities to meet user defined 
+automatically deploy fuel cycle facilities to meet a user defined 
 power demand. 
 
 \Cyclus is an agent-based nuclear fuel cycle simulation framework 
@@ -72,7 +72,7 @@ and facility agents can be grouped into.
 Institution agents control the 
 deployment and decommission of facility agents 
 and represents legal operating organizations such as a 
-utility, government, etc \cite{huff_fundamental_2016}. 
+utility, government, etc. \cite{huff_fundamental_2016}. 
 Facility agents represent nuclear fuel cycle facilities. 
 \Cycamore \cite{carlsen_cycamore_2014}
 provides agents to represent process physics of various 
@@ -145,7 +145,7 @@ Descriptions of each input variable is found in the
 README of the \deploy github repository \cite{d3ploy_doi_2019}.
 
 Essentially, the user must define the facilities for the 
-institution to control and their corresponding capacities. 
+\deploy institution to control and their corresponding capacities. 
 The user must also define the driving commodity, its demand 
 equation and what method the institution predicts 
 demand and supply with. 
@@ -438,8 +438,8 @@ accumulate an appropriate amount of fuel inventory before starting
 up reactors. 
 There is one time step where there is an undersupply after the 
 decommissioning of the large initial facility.  
-This is unavoidable the prediction methods in \deploy are unable 
-to predict this sudden drop in demand. 
+This is unavoidable since the prediction methods in \deploy are 
+unable to predict this sudden drop in demand. 
 
 
 \subsection{\textbf{Transition Scenario: Linearly Increasing Demand}}
@@ -491,15 +491,15 @@ to predict this sudden drop in demand.
 \end{figure*}
 
 
-In this section, a transition scenario where there is a linearly 
+In this section, a transition scenario with a linearly 
 increasing power demand is shown. 
 Table \ref{tab:transition-scenario-growing-power} shows the 
 simulation parameters used in this transition scenario. 
 
 Figures \ref{fig:growingtransition-power}, \ref{fig:growingtransition-fuel}
 and \ref{fig:growingtransition-spentfuel} demonstrate the capability 
-of \deploy to deploy reactor and supporting facilities to meet the user 
-determined power demand and subsequently demanded secondary commodities 
+of \deploy to deploy reactor and supporting facilities to meet the
+power demand and subsequently demanded secondary commodities 
 for a linearly increasing power demand. 
 The fast fourier transform method for predicting power demand is used for 
 this scenario
@@ -512,14 +512,14 @@ In this section, a transition scenario with sinusoidal
 power demand is shown. 
 A sinusoidal power demand is the reflection of power demand in 
 the real world where power usage is higher in the winter and summer
-and is smaller in the spring and fall. 
+and lower in the spring and fall. 
 Table \ref{tab:transition-scenario-sine-power} shows the 
 simulation parameters used in this transition scenario. 
 
 Figures \ref{fig:sinetransition-power}, \ref{fig:sinetransition-fuel}
 and \ref{fig:sinetransition-spentfuel} demonstrate the capability 
-of \deploy to deploy reactor and supporting facilities to meet the user 
-determined power demand and subsequently demanded secondary commodities 
+of \deploy to deploy reactor and supporting facilities to meet the
+power demand and subsequently demanded secondary commodities 
 for a sinusoidal power demand. 
 
 For a sinusoidal power demand, the use of the triple exponential method
