@@ -40,8 +40,6 @@ gchee2@illinois.edu
 \newcolumntype{s}{>{\hsize=.74\hsize}X}
 \newcolumntype{f}{>{\hsize=.1\hsize}X}
 \newcolumntype{a}{>{\hsize=.45\hsize}X}
-\usepackage{titlesec}
-\titleformat*{\subsection}{\normalfont}
 \usepackage{tikz}
 \definecolor{illiniblue}{HTML}{437db6}
 \definecolor{illiniorange}{HTML}{E38749}
@@ -53,6 +51,19 @@ text width=12em, text centered, rounded corners, minimum height=4em]
 \tikzstyle{arrow} = [thick,->,>=stealth]
 
 \begin{document}
+\section*{}
+\textit{In this work, we developed demand-driven deployment 
+capabilities in \Cyclus, \deploy. 
+User-controlled capabilities such 
+as supply/capacity buffers, constraint deployment, prediction 
+algorithms, and installed capacity deployment were 
+introduced to give a user tools to minimize commodity 
+undersupply in the simulation. 
+We demonstrate \deploy's capability 
+to automatically deploy fuel cycle facilities to meet various 
+types of user-defined power demands: constant, linearly increasing, 
+and sinusoidal.}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 For many fuel cycle simulators, it is currently up to the user 

@@ -69,7 +69,9 @@
 \setlength{\parskip}{0pt}
 
 %%%%%%%%%%% SECTIONING %%%%%%%%%%%
-\setcounter{secnumdepth}{-2} %hide all section heading numbers
+%\setcounter{secnumdepth}{-2} %hide all section heading numbers
+\renewcommand{\thesection}{\Roman{section}} 
+\renewcommand{\thesubsection}{\thesection.\Roman{subsection}}
 
 \renewcommand\section{\@startsection
 	{section}{1}{0pt}%		%name, level, indent
