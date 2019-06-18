@@ -114,9 +114,9 @@ Figure \ref{fig:flow} shows the flow of \deploy's logic at every time step.
 \begin{figure*}[!htb]
 	\centering
 	\begin{tikzpicture}[node distance=2.5cm]
-	\node (Start) [bblock] {\textbf{Start of a new time step.}};
-	\node (Predict) [bblock, below of=Start] {\textbf{Predict Demand and Supply for a commodity for the next time step.}};
-	\node (IsThere) [oblock, below of=Predict]{\textbf{Is there Predicted Undersupply? }};
+	\node (Start) [bblock] {\textbf{Start of a new time step ($t$).}};
+	\node (Predict) [bblock, below of=Start] {\textbf{Calculate $D_p(t+1)$, predicted demand and $S_p(t+1)$, predicted supply.}};
+	\node (IsThere) [oblock, below of=Predict]{\textbf{$U(t) = S_p(t)-D_p(t)$}};
 	\node (Deploy) [bblock, below of=IsThere, xshift = -2.5cm]{\textbf{Deploy available facilities to meet predicted demand.} };
     \node (NoDeploy) [bblock, right of=Deploy, xshift = 2.5cm]{\textbf{Do not deploy any facilities.} };
     \node (All) [oblock, below of=Deploy, xshift = 2.5cm] {\textbf{Have we checked for predicted undersupply for all commodities in this time step?}};
@@ -124,8 +124,8 @@ Figure \ref{fig:flow} shows the flow of \deploy's logic at every time step.
 	
 	\draw [arrow] (Start) -- (Predict); 
 	\draw [arrow] (Predict) -- (IsThere);
-    \draw [arrow] (IsThere) -- node[anchor=east] {yes} (Deploy);
-    \draw [arrow] (IsThere) -- node[anchor=west] {no} (NoDeploy);
+    \draw [arrow] (IsThere) -- node[anchor=east] {$U(t+1) < buffer$} (Deploy);
+    \draw [arrow] (IsThere) -- node[anchor=west] {$U(t+1) \geq buffer$} (NoDeploy);
     \draw [arrow] (Deploy) -- (All);
     \draw [arrow] (NoDeploy) -- (All);
     \draw [arrow] (All) -- node[anchor=west] {yes} (End);
@@ -285,7 +285,7 @@ or an absolute value (equation \ref{eq:abs}).
 
 \begin{equation}
     \label{eq:perc}
-    S_{pwb} = S_{p}*(1+p)
+    S_{pwb} = S_{p}*(1+d)
 \end{equation}
 \begin{equation}
     \label{eq:abs}
@@ -293,8 +293,8 @@ or an absolute value (equation \ref{eq:abs}).
 \end{equation}
 where $S_{pwb}$ is predicted supply/capacity with buffer, 
 $S_p$ is the predicted supply/capacity without buffer, 
-$p$ is the percentage 
-value, and $a$ is the absolute value of the buffer. 
+$d$ is the percentage value in decimal form, 
+and $a$ is the absolute value of the buffer. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Demonstration of d3ploy capabilities}
@@ -339,19 +339,19 @@ demand transition scenarios with many facilities.
     \begin{subfigure}[t]{\textwidth}
     \centering
         \includegraphics[width=0.8\linewidth]{figures/constanttransition-power.png} 
-        \caption{Power demand and supply plot}
+        \caption{The power demand is a user-defined equation and power is supplied by the reactors.}
         \label{fig:constanttransition-power}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/constanttransition-fuel.png} 
-        \caption{Fuel demand and supply plot}
+        \caption{Fuel is demanded by reactors and supplied by source facilities.}
 	    \label{fig:constanttransition-fuel}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/constanttransition-spentfuel.png} 
-        \caption{Spent Fuel demand and supply plot}
+        \caption{Spent Fuel is supplied by reactors and the capacity is provided by sink facilities.}
         \label{fig:constanttransition-spentfuel}
     \end{subfigure}
     \caption{Transition Scenario: Constant Power Demand of 10000MW}
@@ -454,22 +454,22 @@ unable to predict this sudden drop in demand.
     \begin{subfigure}[t]{\textwidth}
     \centering
         \includegraphics[width=0.8\linewidth]{figures/growingtransition-power.png} 
-        \caption{Power demand and supply plot}
+        \caption{The power demand is a user-defined equation and power is supplied by the reactors.}
         \label{fig:growingtransition-power}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/growingtransition-fuel.png} 
-        \caption{Fuel demand and supply plot}
+        \caption{Fuel is demanded by reactors and supplied by source facilities.}
 	    \label{fig:growingtransition-fuel}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/growingtransition-spentfuel.png} 
-        \caption{Spent Fuel demand and supply plot}
+        \caption{Spent Fuel is supplied by reactors and the capacity is provided by sink facilities.}
         \label{fig:growingtransition-spentfuel}
     \end{subfigure}
-    \caption{Transition Scenario: Linearly Increasing Power Demand}
+    \caption{Transition Scenario: Linearly increasing power demand.}
 \end{figure*}
 
 \begin{figure*}[!htbp]
@@ -477,19 +477,19 @@ unable to predict this sudden drop in demand.
     \begin{subfigure}[t]{\textwidth}
     \centering
         \includegraphics[width=0.8\linewidth]{figures/sinetransition-power.png} 
-        \caption{Power demand and supply plot}
+        \caption{The power demand is a user-defined equation and power is supplied by the reactors.}
         \label{fig:sinetransition-power}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/sinetransition-fuel.png} 
-        \caption{Fuel demand and supply plot}
+        \caption{Fuel is demanded by reactors and supplied by source facilities.}
 	    \label{fig:sinetransition-fuel}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/sinetransition-spentfuel.png} 
-        \caption{Spent Fuel demand and supply plot}
+        \caption{Spent Fuel is supplied by reactors and the capacity is provided by sink facilities.}
         \label{fig:sinetransition-spentfuel}
     \end{subfigure}
     \caption{Transition Scenario: Sinusoidal Power Demand}
