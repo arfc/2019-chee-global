@@ -12,6 +12,7 @@ gchee2@illinois.edu
 }
 
 %%%% packages and definitions (optional)
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx} % allows inclusion of graphics
 \usepackage{booktabs} % nice rules (thick lines) for tables
 \usepackage{microtype} % improves typography for PDF
@@ -21,6 +22,7 @@ gchee2@illinois.edu
 \usepackage{enumitem}
 \usepackage{placeins}
 \usepackage{multirow}
+\usepackage{amsmath}
 \usepackage[acronym,toc]{glossaries}
 \include{acros}
 \makeglossaries
@@ -38,8 +40,6 @@ gchee2@illinois.edu
 \newcolumntype{s}{>{\hsize=.74\hsize}X}
 \newcolumntype{f}{>{\hsize=.1\hsize}X}
 \newcolumntype{a}{>{\hsize=.45\hsize}X}
-\usepackage{titlesec}
-\titleformat*{\subsection}{\normalfont}
 \usepackage{tikz}
 \definecolor{illiniblue}{HTML}{437db6}
 \definecolor{illiniorange}{HTML}{E38749}
@@ -51,6 +51,19 @@ text width=12em, text centered, rounded corners, minimum height=4em]
 \tikzstyle{arrow} = [thick,->,>=stealth]
 
 \begin{document}
+\section*{}
+\textit{In this work, we developed demand-driven deployment 
+capabilities in \Cyclus, \deploy. 
+User-controlled capabilities such 
+as supply/capacity buffers, constraint deployment, prediction 
+algorithms, and installed capacity deployment were 
+introduced to give a user tools to minimize commodity 
+undersupply in the simulation. 
+We demonstrate \deploy's capability 
+to automatically deploy fuel cycle facilities to meet various 
+types of user-defined power demands: constant, linearly increasing, 
+and sinusoidal.}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 For many fuel cycle simulators, it is currently up to the user 
@@ -83,16 +96,16 @@ The Demand-Driven \Cycamore Archetypes project
 
 \noindent
 (NEUP-FY16-10512) 
-aims to develop \Cyclus's demand-driven deployment capabilities. 
+aims to develop \Cyclus' demand-driven deployment capabilities. 
 This capability is added as a \Cyclus Institution
 agent that deploys facilities to meet the front-end and back-end 
 fuel cycle demands based on a user-defined commodity demand. 
 This demand-driven deployment capability is called 
 \deploy. 
 
-In this paper, we explain the capabilities of \deploy, 
+In this paper, we explain the capabilities of \deploy and
 demonstrate how \deploy minimizes undersupply of all 
-commodities in a simulation while meeting key simulation 
+commodities in a few simulations while meeting key simulation 
 constraints. 
 Constant, linearly increasing, and sinusoidal power demand
 transition scenarios are demonstrated. 
@@ -112,9 +125,9 @@ Figure \ref{fig:flow} shows the flow of \deploy's logic at every time step.
 \begin{figure*}[!htb]
 	\centering
 	\begin{tikzpicture}[node distance=2.5cm]
-	\node (Start) [bblock] {\textbf{Start of a new time step.}};
-	\node (Predict) [bblock, below of=Start] {\textbf{Predict Demand and Supply for a commodity for the next time step.}};
-	\node (IsThere) [oblock, below of=Predict]{\textbf{Is there Predicted Undersupply? }};
+	\node (Start) [bblock] {\textbf{Start of a new time step ($t$).}};
+	\node (Predict) [bblock, below of=Start] {\textbf{Calculate $D_p(t+1)$, predicted demand and $S_p(t+1)$, predicted supply.}};
+	\node (IsThere) [oblock, below of=Predict]{\textbf{$U(t) = S_p(t)-D_p(t)$}};
 	\node (Deploy) [bblock, below of=IsThere, xshift = -2.5cm]{\textbf{Deploy available facilities to meet predicted demand.} };
     \node (NoDeploy) [bblock, right of=Deploy, xshift = 2.5cm]{\textbf{Do not deploy any facilities.} };
     \node (All) [oblock, below of=Deploy, xshift = 2.5cm] {\textbf{Have we checked for predicted undersupply for all commodities in this time step?}};
@@ -122,8 +135,8 @@ Figure \ref{fig:flow} shows the flow of \deploy's logic at every time step.
 	
 	\draw [arrow] (Start) -- (Predict); 
 	\draw [arrow] (Predict) -- (IsThere);
-    \draw [arrow] (IsThere) -- node[anchor=east] {yes} (Deploy);
-    \draw [arrow] (IsThere) -- node[anchor=west] {no} (NoDeploy);
+    \draw [arrow] (IsThere) -- node[anchor=east] {$U(t+1) < buffer$} (Deploy);
+    \draw [arrow] (IsThere) -- node[anchor=west] {$U(t+1) \geq buffer$} (NoDeploy);
     \draw [arrow] (Deploy) -- (All);
     \draw [arrow] (NoDeploy) -- (All);
     \draw [arrow] (All) -- node[anchor=west] {yes} (End);
@@ -134,58 +147,55 @@ Figure \ref{fig:flow} shows the flow of \deploy's logic at every time step.
 	\label{fig:flow}
 \end{figure*}
 
-When there exists a predicted undersupply of a commodity, 
-\deploy will deploy the fewest number of available facilities
-to meet the predicted undersupply. 
+Where \deploy predicts an undersupply, it responds by deploying 
+the fewest number of available facilities to meet demand with minimal 
+oversupply.  
 
 \subsection{\textbf{Basic User-Defined Input Variables}}
 The user inputs specific variables to customize their
 simulation. 
-Descriptions of each input variable is found in the 
+Descriptions of each input variable are found in the 
 README of the \deploy github repository \cite{d3ploy_doi_2019}.
 
-Essentially, the user must define the facilities for the 
-\deploy institution to control and their corresponding capacities. 
-The user must also define the driving commodity, its demand 
-equation and what method the institution predicts 
-demand and supply with. 
+Essentially, the user must define the facilities the 
+\deploy institution controls and can deploy. 
+The user must also define the driving commodity, all facility capacities 
+for producing that commodity, its demand 
+equation, and which method predicts supply and demand. 
 For example, the user can define a demand equation for power of 
-$1000t$ and \deploy will deploy available reactor and supporting 
+$1000 \times timestep$ MW and \deploy will deploy available reactor and supporting 
 facilities to meet the defined power demand. 
 
-The user can also provide a time dependent equation that governs
-preference for that facility compared to other facilities that 
+The user can also provide a time-dependent equation that governs
+preference for a particular facility compared to other facilities that 
 provide the same commodity. 
 For example, the user can define a \gls{LWR} and a \gls{SFR} to have
-preferences of $101-t$ and $t$ respectively. 
-The \gls{LWR} will have a larger preference than the \gls{SFR} up to 
-time step 50.
-Therefore, when there is a demand for power, a \gls{LWR}
-will be deployed before time step 51 
-while a \gls{SFR} will be deployed after time step 50. 
+preferences of $101 - timestep$ and $timestep$ respectively. 
+The institution will prefer deployment of \gls{LWR} facilities over 
+\gls{SFR} before time step 51. 
 
-The user has an option to constrain deployment of a facility 
+The user can constrain facility deployment 
 until a sizable inventory of a specific commodity is accumulated.  
 The user can also define an initial facility list of facilities that 
 are present in the institution at the beginning of the simulation. 
 
 \subsection{\textbf{Prediction Algorithms}}
-Three interchangeable algorithm types govern demand and supply 
+Three interchangeable algorithm classes govern demand and supply 
 predictions: non-optimizing, deterministic optimizing, and stochastic
 optimizing. 
 
-Three methods were implemented for the non-optimizing model: 
-moving average (MA)
-autoregressive moving average (ARMA), autoregressive 
+Three methods were implemented in the non-optimizing class: 
+moving average (MA),
+autoregressive moving average (ARMA), and autoregressive 
 conditional heteroskedasticity (ARCH).
-Four methods were implemented for the deterministic optimizing model: 
+Four methods were implemented in the deterministic optimizing class: 
 Polynomial fit regression, simple exponential smoothing,  
 triple exponential smoothing (holt-winters), and fast fourier 
 transform (fft). 
 One method was implemented for stochastic optimizing model: 
 stepwise seasonal.  
 
-The user can choose which prediction algorithm governs each specific 
+The user can choose which prediction algorithm governs each
 \deploy facility. 
 The effectiveness of a prediction algorithm depends on the type 
 of power demand in a scenario and the type of commodity (demand 
@@ -194,13 +204,15 @@ deployment vs supply driven deployment etc.).
 For example, the most effective method
 for predicting demand and supply for the power commodity in a scenario  
 with a sinusoidal power demand is the triple exponential smoothing method. 
-Whereas, for the non-driving commodities in the same 
+However, for the non-driving commodities in the same 
 scenario, the fast fourier transform method is more effective than triple 
 exponential smoothing. 
+This paper will comment on these categories of problems and their suitable
+algorithms. 
 
 \begin{table*}[!htb]
     \centering
-    \caption {Transition Scenario Parameters that are consisted for constant, linear increasing and sinusoidal power demand simulations}
+    \caption {Transition scenario parameters that are consisted for constant, linear increasing and sinusoidal power demand simulations}
 	\label{tab:transition-scenario-all}
     \begin{tabular}{|l|p{4.5cm}|}
     \hline
@@ -228,52 +240,46 @@ exponential smoothing.
     \end{tabular}
 \end{table*}
 
-\subsection{\textbf{Difference between Demand and Supply Driven Institutions}}
+\subsection{\textbf{Demand-driven vs. Supply-driven Institutions}}
 Within \deploy, there are two institutions: \texttt{Demand-}
 \texttt{DrivenDeploymentInst} and \texttt{SupplyDrivenDeployment}. 
 \texttt{Inst}. 
 The prior is used for the front-end of the fuel cycle and the latter is used 
 for the back-end. 
-Front-end facilities are facilities that exist before the reactor 
-in a nuclear fuel cycle such as a fuel fabrication facility etc. 
-Back-end facilities are facilities that exist after the reactor in a nuclear 
-fuel cycle, such as a reprocessing facility etc. 
-The reason for this separation is to let facilities have the choice 
-to demand for supply or demand for capacity. 
-For example, for front end facilities, the reactor has a demand for 
-fuel, using \texttt{DemandDrivenDeploymentInst}, it triggers the fuel 
-fabrication facility to deploy facilities to create supply to meet 
-the demand. 
-Whereas, for back end facilities, the reactor generates spent fuel 
-, there is a demand for waste repository facility to accept the 
-spent fuel, using \texttt{SupplyDrivenDeploymentInst}, it triggers the
-deployment of a waste repository to create a capacity for spent fuel 
-to meet the available supply. 
+For example, for front end facilities, the reactor demands 
+fuel and \texttt{DemandDrivenDeploymentInst} triggers the deployment 
+of fuel fabrication facilities to create supply meeting the demand 
+for fuel. 
+For back end facilities, the reactor generates spent fuel 
+and \texttt{SupplyDrivenDeploymentInst} triggers the deployment of 
+waste repository facilities to create capacity for storage of the supply 
+of spent fuel. 
 
 \subsection{\textbf{Installed Capacity}}
 The user can choose between deploying facilities based on the difference 
 between predicted demand and predicted supply or predicted demand and 
 installed capacity. 
-There are two reasons for wanting to use installed capacity over predicted 
+There are two advantages to use installed capacity over predicted 
 supply. 
 The first is for facilities that provide intermittent supply, such as a 
 reactor facility that has a designated refueling time. 
-During time steps where a reactor is refueling, the user might not 
+During time steps in which a reactor is refueling, the user might not 
 want \deploy to deploy more facilities to make up for the lack of supply
 caused by this one time step gap in supply. 
 The second is for situations where the input commodity for a facility has
-run out in a simulation and the facility that produces the input commodity 
+run out and the facility that produces the input commodity 
 is no longer commissionable. 
 Therefore, with the demand for the output commodity of that facility, \deploy
 would deploy that facility to meet the demand, however due to the lack of 
 the input commodity, even if there are infinite numbers of that facility, 
 it will not produce the output commodity. 
-For example, in a transition scenario to fast reactors that require plutonium 
-from \gls{LWR}'s \gls{SNF}, if the fast reactor's demand for plutonium exceeds
-the inventory provided by \gls{LWR}s before they were decommissioned, it will 
-result in the deployment of mixer facilities that generate the fast reactor 
-fuel despite the lack of plutonium to generate the fuel. 
-This is an example of a poorly set up transition scenario. 
+For example, in a transition scenario from LWRs to fast reactors, the fast 
+reactor demand for Pu may exceed the inventory provided by LWRs before 
+they were decommissioned. 
+This will result in the deployment of mixer facilities that generate the 
+fast reactor fuel despite the lack of plutonium to generate the fuel. 
+This can be avoided by constraining fast reactor facility deployment 
+until a sizable inventory of Pu is accumulated. 
 
 \subsection{\textbf{Supply/Capacity Buffer}}
 In \texttt{DemandDrivenDeploymentInst}, the user can choose to provide a
@@ -285,12 +291,25 @@ In \texttt{SupplyDrivenDeploymentInst}, the user can choose to
 provide a buffer for predicted capacity.
 \Deploy will deploy facilities to meet the predicted supply with the 
 additional buffer. 
-The buffer can be defined as a percentage value or an absolute value.  
+The buffer can be defined as a percentage value (equation \ref{eq:perc}) 
+or an absolute value (equation \ref{eq:abs}).  
 
+\begin{equation}
+    \label{eq:perc}
+    S_{pwb} = S_{p}*(1+d)
+\end{equation}
+\begin{equation}
+    \label{eq:abs}
+    S_{pwb} = S_{p}+a
+\end{equation}
+where $S_{pwb}$ is predicted supply/capacity with buffer, 
+$S_p$ is the predicted supply/capacity without buffer, 
+$d$ is the percentage value in decimal form, 
+and $a$ is the absolute value of the buffer. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Demonstration of d3ploy capabilities}
-Constant, linearly increasing and sinusoidal power demand simulations
+Constant, linearly increasing, and sinusoidal power demand simulations
 are shown to demonstrate \deploy's capabilities. 
 A balance between the various system parameters must be 
 met for each type of simulation to meet the goal of 
@@ -299,17 +318,17 @@ commodities.
 The input files and scripts to produce the plots in this paper 
 can be reproduced using \cite{d3ploy_doi_2019}. 
 
-These simulations are basic transition scenarios that only includes 
+These simulations are basic transition scenarios that only include
 three types of facilities: \texttt{source}, \texttt{reactor} and 
 \texttt{sink}.
-All of the simulations begin with a ten reactor facilities, 
+All simulations in this work begin with a ten reactor facilities, 
 \texttt{reactor1} to \texttt{reactor10}. 
 These reactors have staggered cycle lengths and lifetimes 
 so that they do not all refuel and decommission at the same time 
 steps. 
-\Deploy deploys reactor facilities of \texttt{new reactor} type
-to meet unmet demand for power that occurs when the ten initial 
-reactor facilities begin to decommission. 
+When the ten initial reactor facilities begin to decommission, 
+\deploy deploys reactor facilities of \texttt{newreactor} type
+to meet unmet demand for power. 
 All the simulations deploy facilities based on the relationship
 between predicted demand and installed capacity. 
 This capability was discussed in the previous section.  
@@ -318,10 +337,10 @@ parameters that are consistent across all the discussed
 scenarios. 
 
 These basic transition scenarios were set up to 
-demonstrate \deploy's capabilities for use in simulating 
+demonstrate \deploy's capabilities for simulating 
 transition scenarios and 
-also to inform decisions about parameter inputs when setting up larger 
-demand transition scenarios that include many facilities. 
+to inform decisions about input parameters when setting up larger 
+demand transition scenarios with many facilities. 
 
 \subsection{\textbf{Transition Scenario: Constant Demand}}
 
@@ -331,19 +350,19 @@ demand transition scenarios that include many facilities.
     \begin{subfigure}[t]{\textwidth}
     \centering
         \includegraphics[width=0.8\linewidth]{figures/constanttransition-power.png} 
-        \caption{Power demand and supply plot}
+        \caption{The power demand is a user-defined equation and power is supplied by the reactors.}
         \label{fig:constanttransition-power}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/constanttransition-fuel.png} 
-        \caption{Fuel demand and supply plot}
+        \caption{Fuel is demanded by reactors and supplied by source facilities.}
 	    \label{fig:constanttransition-fuel}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/constanttransition-spentfuel.png} 
-        \caption{Spent Fuel demand and supply plot}
+        \caption{Spent Fuel is supplied by reactors and the capacity is provided by sink facilities.}
         \label{fig:constanttransition-spentfuel}
     \end{subfigure}
     \caption{Transition Scenario: Constant Power Demand of 10000MW}
@@ -407,33 +426,30 @@ Table \ref{tab:transition-scenario-constant-power} shows the
 simulation parameters used in this transition scenario. 
 
 Figures \ref{fig:constanttransition-power}, \ref{fig:constanttransition-fuel}
-and \ref{fig:constanttransition-spentfuel} demonstrate the capability 
-of \deploy to deploy reactor and supporting facilities to meet the user 
+and \ref{fig:constanttransition-spentfuel} demonstrate \deploy's capability 
+to deploy reactor and supporting facilities to meet the user 
 determined power demand and subsequently demanded secondary commodities 
-with minimal time steps with an undersupply. 
-Table \ref{tab:transition-scenario-results} shows the number of time 
-steps where there is undersupply for each commodity in this scenario. 
+with minimal undersupply. 
+Table \ref{tab:transition-scenario-results} shows the number of 
+undersupplied timesteps. 
 In figure \ref{fig:constanttransition-power}, there are no time steps
-where the supply of power falls under demand.
-By using a combination of using the fast fourier transform method for predicting 
+in which the supply of power falls under demand.
+By using a combination of the fast fourier transform method for predicting 
 demand and setting the supply buffer to 3000MW (the capacity of 3 reactors), 
-the user is able to minimize the number of time steps where there 
-is an undersupply of every commodity. 
-It is important to perform a small sensitivity analysis of the size 
-of buffer to use for each commodity to ensure that there is no 
-undersupply based on the nuances of the facility type: 
-refueling in a reactor etc. 
+the user minimizes the number of undersupplied time steps of every commodity. 
+To ensure there is no undersupply, it is important to perform a
+sensitivity analysis of the size 
+of buffer to use for each commodity. 
 
 In figure \ref{fig:constanttransition-fuel},
-a facility with a large throughput of fuel is initially
+a facility with a large fuel throughput is initially
 deployed to meet the large initial fuel demand for the starting
 up of ten reactors. 
-By having an initial facility with a large throughput
-exist for the first few time steps in the simulation,
-\deploy is prevented from deploying a large amount of supporting
+\Deploy is prevented from deploying many supporting
 facilities that end up being redundant at the later parts of 
-the simulation.   
-This is a reflection of reality where reactor manufacturers will 
+the simulation, by having an initial facility with a large throughput
+exist for the first few time steps in the simulation.
+This is a reflection of reality in which reactor manufacturers will 
 accumulate an appropriate amount of fuel inventory before starting 
 up reactors. 
 There is one time step where there is an undersupply after the 
@@ -449,22 +465,22 @@ unable to predict this sudden drop in demand.
     \begin{subfigure}[t]{\textwidth}
     \centering
         \includegraphics[width=0.8\linewidth]{figures/growingtransition-power.png} 
-        \caption{Power demand and supply plot}
+        \caption{The power demand is a user-defined equation and power is supplied by the reactors.}
         \label{fig:growingtransition-power}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/growingtransition-fuel.png} 
-        \caption{Fuel demand and supply plot}
+        \caption{Fuel is demanded by reactors and supplied by source facilities.}
 	    \label{fig:growingtransition-fuel}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/growingtransition-spentfuel.png} 
-        \caption{Spent Fuel demand and supply plot}
+        \caption{Spent Fuel is supplied by reactors and the capacity is provided by sink facilities.}
         \label{fig:growingtransition-spentfuel}
     \end{subfigure}
-    \caption{Transition Scenario: Linearly Increasing Power Demand}
+    \caption{Transition Scenario: Linearly increasing power demand.}
 \end{figure*}
 
 \begin{figure*}[!htbp]
@@ -472,19 +488,19 @@ unable to predict this sudden drop in demand.
     \begin{subfigure}[t]{\textwidth}
     \centering
         \includegraphics[width=0.8\linewidth]{figures/sinetransition-power.png} 
-        \caption{Power demand and supply plot}
+        \caption{The power demand is a user-defined equation and power is supplied by the reactors.}
         \label{fig:sinetransition-power}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/sinetransition-fuel.png} 
-        \caption{Fuel demand and supply plot}
+        \caption{Fuel is demanded by reactors and supplied by source facilities.}
 	    \label{fig:sinetransition-fuel}
     \end{subfigure}
     \begin{subfigure}[t]{0.65\textwidth}
         \centering
         \includegraphics[width=\linewidth]{figures/sinetransition-spentfuel.png} 
-        \caption{Spent Fuel demand and supply plot}
+        \caption{Spent Fuel is supplied by reactors and the capacity is provided by sink facilities.}
         \label{fig:sinetransition-spentfuel}
     \end{subfigure}
     \caption{Transition Scenario: Sinusoidal Power Demand}
@@ -503,9 +519,9 @@ power demand and subsequently demanded secondary commodities
 for a linearly increasing power demand. 
 The fast fourier transform method for predicting power demand is used for 
 this scenario
-which is similar to what was used for the constant power demand 
+which is identical to what was used for the constant power demand 
 transition scenario. 
-A smaller supply buffer for power was used. 
+A smaller supply buffer could be used while still minimizing under supply. 
 
 \subsection{\textbf{Transition Scenario: Sinusoidal Demand}}
 In this section, a transition scenario with sinusoidal
@@ -535,7 +551,7 @@ This paper describes the capabilities of \deploy, demonstrates
 the use of \deploy for an assortment of transition scenarios: 
 constant power demand, linearly increasing power demand and
 sinusoidal power demand.  
-It also provides insights on parameter inputs to ease the
+It also provides insights on input parameter to ease the
 setting up of larger transition scenarios that include many facilities. 
 Future work includes setting up similar power demand transition 
 scenarios for extended nuclear fuel cycles that incorporate reprocessing 
@@ -548,7 +564,8 @@ seasons in a year for a growing power demand trend.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Acknowledgements}
 This research is funded by the \gls{DOE} Office of 
-Nuclear Energy's Nuclear Energy University Program (Project 16-10512) 
+Nuclear Energy's Nuclear Energy University Program 
+(Project 16-10512, DE-NE0008567) 
 "Demand-Driven Cycamore Archetypes". The authors want to thank 
 members of the \gls{ARFC} group at the University of Illinois at 
 Urbana-Champaign. 
