@@ -1,45 +1,46 @@
 \documentclass{anstrans}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\title{Demonstration of Demand Driven Deployment Capabilities in \Cyclus}
-\author{Gwendolyn J. Chee$^1$, Jin Whan Bae$^2$, Robert R. Flanagan$^3$, Roberto E. Fairhurst Agosta$^1$ and Kathryn D. Huff$^1$}
 
+\title{DEMONSTRATION OF DEMAND DRIVEN DEPLOYMENT CAPABILITIES IN CYCLUS \\~\\~\\~\\}
+\author{Gwendolyn J. Chee$^1$, Jin Whan Bae$^2$, Robert R. Flanagan$^3$, Roberto E. Fairhurst Agosta$^1$ and Kathryn D. Huff$^1$}
 \institute{
 $^1$Dept. of Nuclear, Plasma and Radiological Engineering, University of Illinois at Urbana-Champaign \\
 $^2$ Oak Ridge National Laboratory, Oak Ridge, TN, United States \\
 $^3$Nuclear Engineering Program, University of South Carolina \\
-
-gchee2@illinois.edu
 }
+\email{gchee2@illinois.edu}
 
-%%%% packages and definitions (optional)
-\usepackage[utf8]{inputenc}
 \usepackage{graphicx} % allows inclusion of graphics
-\usepackage{booktabs} % nice rules (thick lines) for tables
+%\usepackage{booktabs} % nice rules (thick lines) for tables
 \usepackage{microtype} % improves typography for PDF
+\usepackage{float}
+\usepackage{longtable}
 \usepackage{xspace}
-\usepackage{tabularx}
+\usepackage{multirow} 
+\usepackage{array}
+\setlength{\arrayrulewidth}{.4mm}
+\renewcommand{\arraystretch}{1.2}
+\usepackage[labelfont=bf]{caption}
+\usepackage{caption}
 \usepackage{subcaption}
 \usepackage{enumitem}
 \usepackage{placeins}
+\usepackage{siunitx}
+%\newcolumntype{c}{>{\hsize=.56\hsize}X}
+%\newcolumntype{b}{>{\hsize=.7\hsize}X}
+%\newcolumntype{s}{>{\hsize=.74\hsize}X}
+%\newcolumntype{f}{>{\hsize=.1\hsize}X}
+%\newcolumntype{a}{>{\hsize=.45\hsize}X}
+%\usepackage{titlesec}
+%\titleformat*{\subsection}{\normalfont}
+%\usepackage[super]{cite}
 \usepackage{multirow}
-\usepackage{amsmath}
-\usepackage[acronym,toc]{glossaries}
-\include{acros}
-\makeglossaries
-\newcommand{\SN}{S$_N$}
-\renewcommand{\vec}[1]{\bm{#1}} %vector is bold italic
-\newcommand{\vd}{\bm{\cdot}} % slightly bold vector dot
-\newcommand{\grad}{\vec{\nabla}} % gradient
-\newcommand{\ud}{\mathop{}\!\mathrm{d}} % upright derivative symbol
+\usepackage{hhline}
+\usepackage{dcolumn}
 \newcommand{\Cyclus}{\textsc{Cyclus}\xspace}%
 \newcommand{\Cycamore}{\textsc{Cycamore}\xspace}%
 \newcommand{\deploy}{\texttt{d3ploy}\xspace}%
 \newcommand{\Deploy}{\texttt{D3ploy}\xspace}%
-\newcolumntype{c}{>{\hsize=.56\hsize}X}
-\newcolumntype{b}{>{\hsize=.7\hsize}X}
-\newcolumntype{s}{>{\hsize=.74\hsize}X}
-\newcolumntype{f}{>{\hsize=.1\hsize}X}
-\newcolumntype{a}{>{\hsize=.45\hsize}X}
+
 \usepackage{tikz}
 \definecolor{illiniblue}{HTML}{437db6}
 \definecolor{illiniorange}{HTML}{E38749}
@@ -50,21 +51,29 @@ text width=12em, text centered, rounded corners, minimum height=4em]
 text width=12em, text centered, rounded corners, minimum height=4em]
 \tikzstyle{arrow} = [thick,->,>=stealth]
 
-\begin{document}
-\section*{}
-\textit{In this work, we developed demand-driven deployment 
-capabilities in \Cyclus, \deploy. 
-User-controlled capabilities such 
-as supply/capacity buffers, constraint deployment, prediction 
-algorithms, and installed capacity deployment were 
-introduced to give a user tools to minimize commodity 
-undersupply in the simulation. 
-We demonstrate \deploy's capability 
-to automatically deploy fuel cycle facilities to meet various 
-types of user-defined power demands: constant, linearly increasing, 
-and sinusoidal.}
+\usepackage[acronym,toc]{glossaries}
+\include{acros}
+\makeglossaries
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{abstract}
+%
+\textit{
+	In this work, we developed demand-driven deployment 
+	capabilities in \Cyclus, \deploy. 
+	User-controlled capabilities such 
+	as supply/capacity buffers, constraint deployment, prediction 
+	algorithms, and installed capacity deployment were 
+	introduced to give a user tools to minimize commodity 
+	undersupply in the simulation. 
+	We demonstrate \deploy's capability 
+	to automatically deploy fuel cycle facilities to meet various 
+	types of user-defined power demands: constant, linearly increasing, 
+	and sinusoidal.
+}
+\end{abstract}
+
 \section{Introduction}
 For many fuel cycle simulators, it is currently up to the user 
 to define a deployment scheme of supporting facilities to ensure 
@@ -218,7 +227,7 @@ algorithms.
     \hline
     \textbf{Parameters}    & \textbf{Description} \\ \hline
     Facilities Present     & \texttt{Source} (Capacity: 3000kg), \texttt{Reactor} (Capacity: 1000MW), \texttt{Sink} (Capacity: 50000kg)      \\ \hline
-    New Reactor Parameters & Cycle time: 18, Refuel time: 1\\ \hline
+    New Reactor Parameters & \shortstack[l]{Cycle time: 18 months, \\ Refuel time: 1 month}\\ \hline
     Driving Commodity & Power \\ \hline
     \end{tabular}
 \end{table*}
@@ -286,11 +295,15 @@ In \texttt{DemandDrivenDeploymentInst}, the user can choose to provide a
 buffer for predicted supply.
 \Deploy will deploy facilities to meet the predicted demand with the 
 additional buffer. 
-
 In \texttt{SupplyDrivenDeploymentInst}, the user can choose to 
 provide a buffer for predicted capacity.
 \Deploy will deploy facilities to meet the predicted supply with the 
 additional buffer. 
+For example, the user could set the power commodity's supply buffer 
+to be 2000 MW. 
+If predicted demand is 10000 MW, \deploy will deploy reactor 
+facilities to meet the predicted demand and supply buffer, resulting 
+in a power supply of 12000 MW. 
 The buffer can be defined as a percentage value (equation \ref{eq:perc}) 
 or an absolute value (equation \ref{eq:abs}).  
 
@@ -307,6 +320,11 @@ $S_p$ is the predicted supply/capacity without buffer,
 $d$ is the percentage value in decimal form, 
 and $a$ is the absolute value of the buffer. 
 
+Using a combination of this buffer capability with the 
+installed capacity deployment driving method in a transition 
+scenario simulation is effective in minimizing undersupply of a 
+commodity without having excessive over supply. 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Demonstration of d3ploy capabilities}
 Constant, linearly increasing, and sinusoidal power demand simulations
@@ -321,7 +339,7 @@ can be reproduced using \cite{d3ploy_doi_2019}.
 These simulations are basic transition scenarios that only include
 three types of facilities: \texttt{source}, \texttt{reactor} and 
 \texttt{sink}.
-All simulations in this work begin with a ten reactor facilities, 
+All of the simulations begin with ten reactor facilities, 
 \texttt{reactor1} to \texttt{reactor10}. 
 These reactors have staggered cycle lengths and lifetimes 
 so that they do not all refuel and decommission at the same time 
@@ -575,8 +593,9 @@ particularly those in the University of Wisconsin
 Group (ERGS) for collaborative \Cyclus development.
 %----------------------------------------------------------------%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bibliographystyle{ans}
-\bibliography{bibliography}
-\end{document}
+\begin{center}
+	\bibliographystyle{ans}
+	\bibliography{bibliography}
+\end{center}
 
+\end{document}

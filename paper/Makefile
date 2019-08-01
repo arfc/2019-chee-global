@@ -1,4 +1,4 @@
-manuscript = chee-global-paper
+manuscript = paper
 references = $(wildcard *.bib)
 latexopt   = -halt-on-error -file-line-error
 
@@ -24,7 +24,7 @@ epub:
 	ebook-convert $(manuscript).html $(manuscript).epub
 
 clean:
-	rm -f *.fls *.pdf *.fdb_latexmk *.glo *.ist *.log *.dvi *.toc *.aux *.gz *.out *.log *.bbl *.blg *.log *.spl *~ *.spl *.zip *.acn *.glo *.ist *.epub
+	rm -f *.fdb_latexmk *.fls *.pdf *.glo *.ist *.log *.dvi *.toc *.aux *.gz *.out *.log *.bbl *.blg *.log *.spl *~ *.spl *.zip *.acn *.glo *.ist *.epub
 
 realclean: clean
 	rm -rf $(manuscript).dvi
