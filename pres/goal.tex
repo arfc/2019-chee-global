@@ -3,9 +3,25 @@
     \textbf{Goals of this work} 
     \begin{itemize}
         \item Develop demand driven deployment capabilities in \Cyclus (\deploy)
-        \item Demonstrate the use of \deploy to set up EG01-23, EG01-24, EG01-29
-        EG01-30 transition scenarios with constant and linearly increasing 
-        power demand curves. 
+        \item Demonstrate the use of \deploy to set up transition scenarios 
+        from the current once through \gls{LWR} fuel cycle to four other more 
+        promising fuel cycles. 
     \end{itemize}
+
+    \begin{table}[]
+        \centering
+        \caption{Descriptions of the current and other high performing nuclear fuel cycle evaluation groups described in the evaluation and screening study \cite{wigeland_nuclear_2014}.}
+        \label{tab:eg}
+            \footnotesize
+            \begin{tabularx}{\textwidth}{l|lll}
+                \hline
+            \textbf{Fuel Cycle}                                               & \textbf{Open or Closed} & \textbf{Fuel Type}                                                              & \textbf{Reactor Type}                                                                           \\ \hline
+            \textbf{\begin{tabular}[c]{@{}l@{}}EG01\\ (current)\end{tabular}} & Open                                                               & Enriched-U                                                                      & Thermal critical reactors                                                                       \\ 
+            \textbf{EG23}                                                     & Closed                                                             & \begin{tabular}[c]{@{}l@{}}Recycle of U/Pu \\ with natural-U fuel\end{tabular}  & Fast critical reactors                                                                          \\ 
+            \textbf{EG24}                                                     & Closed                                                             & \begin{tabular}[c]{@{}l@{}}Recycle of U/TRU \\ with natural-U fuel\end{tabular} & Fast critical reactors                                                                          \\ 
+            \textbf{EG29}                                                     & Closed                                                             & \begin{tabular}[c]{@{}l@{}}Recycle of U/Pu \\ with natural-U fuel\end{tabular}  & \begin{tabular}[c]{@{}l@{}}Fast critical reactors and \\ thermal critical reactors\end{tabular} \\ 
+            \textbf{EG30} & Closed                                                             & \begin{tabular}[c]{@{}l@{}}Recycle of U/TRU \\ with natural-U fuel\end{tabular} & \begin{tabular}[c]{@{}l@{}}Fast critical reactors and \\ thermal critical reactors\end{tabular} \\ \hline
+        \end{tabularx}
+    \end{table}
 
 \end{frame}
