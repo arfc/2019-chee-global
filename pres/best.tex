@@ -2,21 +2,21 @@
     \frametitle{Best Performing Transition Scenarios}
     \textbf{Input Parameters of best performing transition scenarios}
     \begin{table}[]
+      {\renewcommand{\arraystretch}{1.2}
         \resizebox{\textwidth}{!}{%
-        \begin{tabular}{|l|l|c|l|l|l|}
+        \begin{tabular}{l|l|c|l|l|l}
         \hline
-        \multirow{2}{*}{}                         & \multicolumn{1}{c|}{\multirow{2}{*}{\textbf{Input Parameter}}} & \multicolumn{4}{c|}{\textbf{Simulation Description}}                                                                                                                                                                                                                                                       \\ \cline{3-6} 
+        \multirow{2}{*}{}                         & \multicolumn{1}{c|}{\multirow{2}{*}{\textbf{Input Parameter}}} & \multicolumn{4}{c}{\textbf{Simulation Description}}                                                                                                                                                                                                                                                       \\ \cline{3-6} 
                                                   & \multicolumn{1}{c|}{}                                          & \multicolumn{1}{l|}{\textbf{EG01-23}}                                                                 & \textbf{EG01-24}                  & \textbf{EG01-29}                 &\textbf{EG01-30}                                                  \\ \hline
-        \multirow{4}{*}{\textbf{Required}} & Demand driving commodity                                       & \multicolumn{4}{c|}{Power}                                                                                                                                                                                                                                                                                 \\ \cline{2-6} 
+        \multirow{4}{*}{\textbf{Required}} & Demand driving commodity                                       & \multicolumn{4}{c}{Power}                                                                                                                                                                                                                                                                                 \\ \cline{2-6} 
                                                   & Demand equation [MW]                                               & \multicolumn{1}{l|}{60000}                                                                                & $60000 + 250t/12$ & 60000                     &     $60000 + 250t/12$                                       \\ \cline{2-6} 
                                                   & Prediction method                                              & \texttt{poly}       & \texttt{fft}             & \texttt{poly}         &  \texttt{fft}    \\ \cline{2-6} 
-                                                  & Deployment Driving Method                                      & \multicolumn{4}{c|}{Installed Capacity}                                                                                                                                                                                                                                                                    \\ \hline
-        \multirow{2}{*}{\textbf{Optional}} & Buffer type                                                    & \multicolumn{4}{c|}{Absolute}                                                                                                                                                                                                                                                               \\ \cline{2-6} 
+                                                  & Deployment Driving Method                                      & \multicolumn{4}{c}{Installed Capacity}                                                                                                                                                                                                                                                                    \\ \hline
+        \multirow{2}{*}{\textbf{Optional}} & Buffer type                                                    & \multicolumn{4}{c}{Absolute}                                                                                                                                                                                                                                                               \\ \cline{2-6} 
                                                   & Power Buffer size [MW]                                                   & 0 & 6000 & 0 & 8000 \\ \hline
         \end{tabular}%
-        }
-        \caption{\deploy's input parameters for EG01-EG23, EG01-EG24, EG01-EG29, and 
-        EG01-EG30 transition scenarios
+        }}
+        \caption{\deploy's input parameters for all 4 transition scenarios
         that minimizes undersupply of power and minimizes 
         the undersupply and under capacity of the other facilities. }
         \label{tab:bestinputs}
@@ -34,7 +34,8 @@
               the EG01-23 constant power demand transition scenario. 
               \deploy automatically deploys reactor facilities 
               to set up a supply chain to meet constant power demand of $60000$ MW
-              during a transition from \glspl{LWR} to \glspl{SFR}}.
+              during a transition from \glspl{LWR} to \glspl{SFR}. Note: \glspl{SFR}
+              in this simulation have $\frac{1}{3}$ power capacity of \glspl{PWR}.}.
       \end{figure}
 \end{frame}
 
@@ -49,7 +50,7 @@
               the EG01-23 constant power demand transition scenario. 
               \deploy automatically deploys reactor facilities 
               to set up a supply chain to meet constant power demand of $60000$ MW
-              during a transition from \glspl{LWR} to \glspl{SFR}}.
+              during a transition from \glspl{LWR} to \glspl{SFR}.}
       \end{figure}
 \end{frame}
 
@@ -64,7 +65,7 @@
               the EG01-30 linearly increasing power demand transition scenario. 
               \deploy automatically deploys reactor facilities 
               to set up a supply chain to meet constant power demand of $60000+250t/12$ MW
-              during a transition from \glspl{LWR} to \glspl{SFR}}.
+              during a transition from \glspl{LWR} to \glspl{SFR}.}
       \end{figure}
 \end{frame}
 
@@ -79,7 +80,8 @@
               the EG01-30 linearly increasing power demand transition scenario. 
               \deploy automatically deploys reactor facilities 
               to set up a supply chain to meet constant power demand of $60000+250t/12$ MW
-              during a transition from \glspl{LWR} to \glspl{SFR}}.
+              during a transition from \glspl{LWR} to \glspl{SFR}. Note: \glspl{SFR}
+              in this simulation have $\frac{1}{3}$ power capacity of \glspl{PWR}.}
       \end{figure}
 \end{frame}
 
@@ -88,7 +90,7 @@
     \textbf{Undersupply and under capacity of commodities for the best performing transition scenarios} 
     \begin{table}[]
         \centering
-            \caption{Undersupply/capacity of commodities for the best performing EG01-EG23,24,29,30 transition scenarios.}
+            \caption{Undersupply/capacity of commodities for the best performing transition scenarios.}
             \label{tab:all-power}
             \footnotesize
             \begin{tabularx}{\textwidth}{l|RRRR}

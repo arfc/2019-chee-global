@@ -1,23 +1,35 @@
 \begin{frame}
     \frametitle{Breakdown of Results}
-    The goal is to set up 4 transition scenarios in which undersupply 
-    and under capacity of all commodities is minimized. 
+    \textbf{The goal is to simulate 4 transition scenarios with fuel cycle facility 
+    deployment driven by demand.}  
     \begin{enumerate}
-        \item EG01-23 Constant Power Demand
-        \item EG01-24 Linearly Increasing Power Demand
-        \item EG01-29 Constant Power Demand
-        \item EG01-30 Linearly Increasing Power Demand
+        \item EG01-23 $D(t)=D_0$
+        \item EG01-24 $D(t)=D_0+rt$
+        \item EG01-29 $D(t)=D_0$
+        \item EG01-30 $D(t)=D_0+rt$
     \end{enumerate}
 
-This is achieved by:
+We achieved this by:
 \begin{enumerate}
-    \item Comparison of prediction methods for each of 4 scenarios is conducted 
-    to determine the best method. 
-    \item Sensitivity analysis of power supply buffer is conducted to determine 
-    best buffer size. 
-    \item Using best prediction method and buffer size, demonstrate \deploy 
+    \item Applying and comparing all prediction methods for each scenario. 
+    \item Exploring performance sensitivity to buffer size.
+    \item Using the best prediction method and buffer size, demonstrate \deploy 
     deploying reactor and supporting facilities to meet power demand 
     for 4 scenarios. 
 \end{enumerate}
 
+\end{frame}
+
+\begin{frame}
+    \frametitle{Setting up the Problem}
+\textbf{Mass Flow and Facilities in Transition Scenarios: EG01-23 and EG01-30.}
+
+    \begin{figure}[]
+        \centering
+        \subfigure{\includegraphics[width=0.45\linewidth]{../paper/figures/23flow.pdf}}
+        \hspace{1em}
+        \subfigure{\includegraphics[width=0.45\linewidth]{../paper/figures/30flow.pdf}}
+        \caption{Diagrams with facilities and mass flow of the scenarios EG01-EG23 and EG01-EG30.}
+        \label{fig:eg2330}
+    \end{figure}
 \end{frame}
