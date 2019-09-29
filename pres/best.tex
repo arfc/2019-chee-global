@@ -24,6 +24,37 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Best Performing Transition Scenarios}
+  \textbf{Undersupply and under capacity of commodities for the best performing transition scenarios} 
+  \begin{table}[]
+      \centering
+          \caption{Undersupply/capacity of commodities for the best performing transition scenarios.}
+          \label{tab:all-power}
+          \footnotesize
+          \begin{tabularx}{\textwidth}{l|llll}
+          \hline
+          & \multicolumn{3}{|c}{\textbf{Undersupplied Time Steps}} \\ \hline
+          \textbf{Transition Scenario} & EG01-EG23 & 
+          EG01-EG24 & EG01-EG29 & 
+          EG01-EG30 \\ 
+          \textbf{Power Demand} &Constant&Linearly Increasing&Constant&Linearly Increasing \\
+          \textbf{Prediction Method} &\texttt{poly}&\texttt{fft}&\texttt{poly}& \texttt{fft}\\
+          \textbf{Power Supply Buffer [MW]} &0&6000&0&8000 \\ \hline
+          \textbf{Commodities} \\ 
+          Natural Uranium		    & 2 	& 3  &  1  & 1 \\ 
+          \gls{LWR} Fuel     	    & 4 	& 6  &  1  & 2\\ 
+          \gls{SFR} Fuel     	    &  0 	& 0  &  2  & 2\\ 
+          \gls{MOX} \gls{LWR} Fuel &-&-&2&2 \\
+          Power      				&  6 	& 7  &  4 &  5\\ 
+          \gls{LWR} Spent Fuel	& 1 	& 1  & 1 & 1\\ 
+          \gls{SFR} Spent Fuel     	    &  1 	& 1  &  1  & 1\\ 
+          \gls{MOX} \gls{LWR} Spent Fuel &-&-&1&1 \\ \hline 
+      \end{tabularx}
+  \end{table}
+  
+\end{frame}
+
+\begin{frame}
     \frametitle{Best Performing Transition Scenarios}
     \textbf{EG01-23: Constant Power Demand}
     \begin{figure}[htbp!]
@@ -85,33 +116,3 @@
       \end{figure}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Best Performing Transition Scenarios}
-    \textbf{Undersupply and under capacity of commodities for the best performing transition scenarios} 
-    \begin{table}[]
-        \centering
-            \caption{Undersupply/capacity of commodities for the best performing transition scenarios.}
-            \label{tab:all-power}
-            \footnotesize
-            \begin{tabularx}{\textwidth}{l|RRRR}
-            \hline
-            & \multicolumn{3}{|c}{\textbf{Undersupplied Time Steps}} \\ \hline
-            \textbf{Transition Scenario} & EG01-EG23 & 
-            EG01-EG24 & EG01-EG29 & 
-            EG01-EG30 \\ 
-            \textbf{Power Demand} &Constant&Linearly Increasing&Constant&Linearly Increasing \\
-            \textbf{Prediction Method} &\texttt{poly}&\texttt{fft}&\texttt{poly}& \texttt{fft}\\
-            \textbf{Power Supply Buffer [MW]} &0&6000&0&8000 \\ \hline
-            \textbf{Commodities} \\ 
-            Natural Uranium		    & 2 	& 3  &  1  & 1 \\ 
-            \gls{LWR} Fuel     	    & 4 	& 6  &  1  & 2\\ 
-            \gls{SFR} Fuel     	    &  0 	& 0  &  2  & 2\\ 
-            \gls{MOX} \gls{LWR} Fuel &-&-&2&2 \\
-            Power      				&  6 	& 7  &  4 &  5\\ 
-            \gls{LWR} Spent Fuel	& 1 	& 1  & 1 & 1\\ 
-            \gls{SFR} Spent Fuel     	    &  1 	& 1  &  1  & 1\\ 
-            \gls{MOX} \gls{LWR} Spent Fuel &-&-&1&1 \\ \hline 
-        \end{tabularx}
-    \end{table}
-    
-\end{frame}
